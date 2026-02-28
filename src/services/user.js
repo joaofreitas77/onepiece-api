@@ -10,4 +10,15 @@ const getUsersService = async (name) => {
     return await userRepository.find({ where: filter })
 }
 
-module.exports = { getUsersService }
+const getUsersIdService = async (id) => {
+    const user = await userRepository.findOne({
+        where: {id:  Number(id)}
+    });
+
+    return user;
+}
+
+module.exports = {
+    getUsersService,
+    getUsersIdService,
+}

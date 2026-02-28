@@ -1,4 +1,4 @@
-const { getUsersController } = require("../controllers/user")
+const { getUsersController, getUsersByIdController } = require("../controllers/user")
 const { userRepository } = require("../repositories/user")
 
 module.exports = (app) => {
@@ -6,16 +6,18 @@ module.exports = (app) => {
         res.send('<h1 style="color:red "> API de one piece </h1>')
     })
 
-    app.get("/users", async (req, res) => await getUsersController(req, res))
+    app.get("/users", getUsersController)
 
-    app.get("/users/:id", async (req, res) => {
+    /*app.get("/users/:id", async (req, res) => {
         const id = Number(req.params.id)
         const idAlreadyExists = await userRepository.findOne({ where: { id: id } })
 
         if (idAlreadyExists) return res.status(200).json(idAlreadyExists)
 
         res.status(404).json({ message: "Not Found" })
-    })
+    })*/
+
+    app.get("/users/:id", getUsersByIdController)
 
     app.post("/users", async (req, res) => {
         const { name, fruit } = req.body;
