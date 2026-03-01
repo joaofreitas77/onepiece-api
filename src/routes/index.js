@@ -1,4 +1,4 @@
-const { getUsersController, getUsersByIdController } = require("../controllers/user")
+const { getUsersController, getUsersByIdController, postUsersController } = require("../controllers/user")
 const { userRepository } = require("../repositories/user")
 
 module.exports = (app) => {
@@ -19,7 +19,7 @@ module.exports = (app) => {
 
     app.get("/users/:id", getUsersByIdController)
 
-    app.post("/users", async (req, res) => {
+    /*app.post("/users", async (req, res) => {
         const { name, fruit } = req.body;
         const getname = name.toLowerCase()
         if (!getname || !fruit) {
@@ -31,7 +31,9 @@ module.exports = (app) => {
         const newUser = await userRepository.create({ name: getname, fruit })
         await userRepository.save(newUser);
         res.status(201).json({ message: "created" });
-    })
+    })*/
+
+    app.post("/users", postUsersController)
 
     app.put("/users/:id", async (req, res) => {
         const id = Number(req.params.id);

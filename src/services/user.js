@@ -12,13 +12,30 @@ const getUsersService = async (name) => {
 
 const getUsersIdService = async (id) => {
     const user = await userRepository.findOne({
-        where: {id:  Number(id)}
+        where: { id: Number(id) }
     });
 
     return user;
 }
 
+const postUsers = async (name, fruit) => {
+    const getname = name.toLowerCase()
+    if (!getname || !fruit) {
+        throw new Error("Name and fruit are required")
+    }
+
+    const userAlreadyExists = await userRepository.findOne({ where: { name: getname } })
+    if (userAlreadyExists) {
+        throw new Error("User already exists");
+    }
+
+    const newUser = await userRepository.create({ name: getname, fruit })
+    await userRepository.save(newUser)
+    return newUser
+}
+
 module.exports = {
     getUsersService,
     getUsersIdService,
+    postUsers,
 }

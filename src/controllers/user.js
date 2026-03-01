@@ -1,4 +1,4 @@
-const { getUsersService, getUsersIdService } = require("../services/user");
+const { getUsersService, getUsersIdService, postUsers } = require("../services/user");
 
 
 const getUsersController = async (req, res) => {
@@ -18,10 +18,28 @@ const getUsersByIdController = async (req, res) => {
             return res.stauts(404).json({ message: "Not Found" })
         }
 
-        return res. status(200).json(user);
-    }catch(error){
+        return res.status(200).json(user);
+    } catch (error) {
         return res.status(500).json(error);
     }
 }
 
-module.exports = { getUsersController, getUsersByIdController }
+const postUsersController = async (req, res) => {
+    try {
+        const { name, fruit } = req.body;
+        const newUser = await postUsers(name, fruit);
+
+        return res.status(201).json(newUser);
+    } catch (error) {
+        if (error.message === "Name and fruit are required") {
+            return res.status(400).json({ message: error.message })
+        }
+        if (error.message === "User already exists") {
+            return res.status(409).json({ message: error.message })
+        }
+        console.error(error)
+        return res.status(500).json({ message: "Internal server error" })
+    }
+}
+
+module.exports = { getUsersController, getUsersByIdController, postUsersController }
