@@ -18,7 +18,7 @@ const getUsersIdService = async (id) => {
     return user;
 }
 
-const postUsers = async (name, fruit) => {
+const postUsersService = async (name, fruit) => {
     const getname = name.toLowerCase()
     if (!getname || !fruit) {
         throw new Error("Name and fruit are required")
@@ -34,8 +34,29 @@ const postUsers = async (name, fruit) => {
     return newUser
 }
 
+const putUsersService = async (id, name, fruit) => {
+    const user = await userRepository.findOne({ where: { id: Number(id) } })
+
+    if(!user){
+        return null;
+    }
+    if(!name || !fruit){
+        throw new Error("Name and fruit are required")
+    }
+    if(name){
+        user.name = name.toLowerCase()
+    }
+    if(fruit){
+        user.fruit = fruit
+    }
+    
+    await userRepository.save(user)
+    return user
+}
+
 module.exports = {
     getUsersService,
     getUsersIdService,
-    postUsers,
+    postUsersService,
+    putUsersService,
 }

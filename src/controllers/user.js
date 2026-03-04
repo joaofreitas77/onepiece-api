@@ -1,4 +1,4 @@
-const { getUsersService, getUsersIdService, postUsers } = require("../services/user");
+const { getUsersService, getUsersIdService, postUsersService, putUsersService } = require("../services/user");
 
 
 const getUsersController = async (req, res) => {
@@ -27,7 +27,7 @@ const getUsersByIdController = async (req, res) => {
 const postUsersController = async (req, res) => {
     try {
         const { name, fruit } = req.body;
-        const newUser = await postUsers(name, fruit);
+        const newUser = await postUsersService(name, fruit);
 
         return res.status(201).json(newUser);
     } catch (error) {
@@ -42,4 +42,20 @@ const postUsersController = async (req, res) => {
     }
 }
 
-module.exports = { getUsersController, getUsersByIdController, postUsersController }
+const putUsersController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, fruit } = req.body;
+        const updateUser = await putUsersService(id, name, fruit);
+
+        if (!updateUser) {
+            return res.stauts(404).json({ message: "Not Found" })
+        }
+
+        return res.status(201).json(updateUser);
+    } catch (error) {
+        return res.status(400).json({ message: error.message })
+    }
+}
+
+module.exports = { getUsersController, getUsersByIdController, postUsersController, putUsersController }

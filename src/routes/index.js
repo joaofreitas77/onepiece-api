@@ -1,4 +1,4 @@
-const { getUsersController, getUsersByIdController, postUsersController } = require("../controllers/user")
+const { getUsersController, getUsersByIdController, postUsersController, putUsersController } = require("../controllers/user")
 const { userRepository } = require("../repositories/user")
 
 module.exports = (app) => {
@@ -35,7 +35,7 @@ module.exports = (app) => {
 
     app.post("/users", postUsersController)
 
-    app.put("/users/:id", async (req, res) => {
+    /*app.put("/users/:id", async (req, res) => {
         const id = Number(req.params.id);
         let { name, fruit } = req.body;
 
@@ -58,7 +58,9 @@ module.exports = (app) => {
         await userRepository.save(user);
 
         res.status(200).json([user]);
-    })
+    })*/
+
+    app.put("/users/:id", putUsersController)
 
     app.delete("/users/:id", async (req, res) => {
         const id = Number(req.params.id);
