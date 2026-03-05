@@ -37,21 +37,32 @@ const postUsersService = async (name, fruit) => {
 const putUsersService = async (id, name, fruit) => {
     const user = await userRepository.findOne({ where: { id: Number(id) } })
 
-    if(!user){
+    if (!user) {
         return null;
     }
-    if(!name || !fruit){
+    if (!name || !fruit) {
         throw new Error("Name and fruit are required")
     }
-    if(name){
+    if (name) {
         user.name = name.toLowerCase()
     }
-    if(fruit){
+    if (fruit) {
         user.fruit = fruit
     }
-    
+
     await userRepository.save(user)
     return user
+}
+
+const deleteUsersService = async (id) => {
+    const user = await userRepository.findOne({ where: { id: Number(id) } })
+
+    if(!user){
+        return null
+    }
+
+    await userRepository.delete(id)
+    return true;
 }
 
 module.exports = {
@@ -59,4 +70,5 @@ module.exports = {
     getUsersIdService,
     postUsersService,
     putUsersService,
+    deleteUsersService,
 }

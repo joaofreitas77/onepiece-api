@@ -1,4 +1,4 @@
-const { getUsersService, getUsersIdService, postUsersService, putUsersService } = require("../services/user");
+const { getUsersService, getUsersIdService, postUsersService, putUsersService, deleteUsersService } = require("../services/user");
 
 
 const getUsersController = async (req, res) => {
@@ -15,7 +15,7 @@ const getUsersByIdController = async (req, res) => {
         const user = await getUsersIdService(req.params.id);
 
         if (!user) {
-            return res.stauts(404).json({ message: "Not Found" })
+            return res.status(404).json({ message: "Not Found" })
         }
 
         return res.status(200).json(user);
@@ -58,4 +58,20 @@ const putUsersController = async (req, res) => {
     }
 }
 
-module.exports = { getUsersController, getUsersByIdController, postUsersController, putUsersController }
+const deleteUsersController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deleteUser = await deleteUsersService(id);
+
+        if (!deleteUser) {
+            return res.status(404).json({ message: "Not Found" });
+        }
+
+        return res.status(200).json({ message: "User deleted" });
+
+    } catch (error) {
+        return res.status(500).json({ message: "Internal Server Error" })
+    }
+}
+
+module.exports = { getUsersController, getUsersByIdController, postUsersController, putUsersController, deleteUsersController }

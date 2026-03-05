@@ -1,4 +1,4 @@
-const { getUsersController, getUsersByIdController, postUsersController, putUsersController } = require("../controllers/user")
+const { getUsersController, getUsersByIdController, postUsersController, putUsersController, deleteUsersController } = require("../controllers/user")
 const { userRepository } = require("../repositories/user")
 
 module.exports = (app) => {
@@ -62,7 +62,7 @@ module.exports = (app) => {
 
     app.put("/users/:id", putUsersController)
 
-    app.delete("/users/:id", async (req, res) => {
+    /*app.delete("/users/:id", async (req, res) => {
         const id = Number(req.params.id);
         const user = await userRepository.findOne({ where: { id } })
         if (!user) {
@@ -72,5 +72,7 @@ module.exports = (app) => {
         await userRepository.delete(id);
 
         return res.status(200).json({ message: "User deleted" });
-    })
+    })*/
+
+    app.delete("/users/:id", deleteUsersController)
 }
